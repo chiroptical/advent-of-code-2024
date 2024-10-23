@@ -1,26 +1,37 @@
 import Parsing
 
-public struct Card {
+public struct ScoreCard {
 	var number: Int
 	var winners: [Int]
 	var current: [Int]
 }
 
-// What are these 'any' or 'some' annotations?
-public func cardParser() -> any Parser<Substring, Card> {
-	let numbers: some Parser<Substring, [Int]> = Many {
+public func scores() -> some Parser<Substring, [Int]> {
+	return Many {
 		Int.parser()
 	} separator: {
-		" "
+		Whitespace()
 	}
-	return Parse(
-		input: Substring.self, Card.init
-	) {
+}
+
+public func cardNumber() -> some Parser<Substring, Int> {
+	return Parse {
 		"Card"
+		Whitespace()
 		Int.parser()
 		":"
-		numbers
-		"|"
-		numbers
+	}
+}
+
+// What are these 'any' or 'some' annotations?
+public func scoreCard() -> any Parser<Substring, ScoreCard> {
+	return Parse(
+		input: Substring.self, ScoreCard.init
+	) {
+		cardNumber()
+		Whitespace()
+		scores()
+		" | "
+		scores()
 	}
 }
