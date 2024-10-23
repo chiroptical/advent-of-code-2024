@@ -6,32 +6,48 @@ public struct ScoreCard {
 	var current: [Int]
 }
 
-public func scores() -> some Parser<Substring, [Int]> {
-	return Many {
-		Int.parser()
-	} separator: {
-		Whitespace()
+extension ScoreCard {
+	var points: Int {
+		let winnersSet = Set(self.winners)
+		let currentSet = Set(self.current)
+		let total = currentSet.intersection(winnersSet).count
+		return switch total {
+		case 0:
+			0
+		case 1:
+			1
+		default:
+			2 << (total - 2)
+		}
 	}
 }
 
-public func cardNumber() -> some Parser<Substring, Int> {
-	return Parse {
+@MainActor
+let cardNumber: some Parser<Substring, Int> =
+	Parse {
 		"Card"
 		Whitespace()
 		Int.parser()
 		":"
 	}
-}
 
 // What are these 'any' or 'some' annotations?
-public func scoreCard() -> any Parser<Substring, ScoreCard> {
-	return Parse(
+@MainActor
+let scoreCard: some Parser<Substring, ScoreCard> =
+	Parse(
 		input: Substring.self, ScoreCard.init
 	) {
-		cardNumber()
+		cardNumber
 		Whitespace()
-		scores()
+		numbersSeparatedBySpace
 		" | "
-		scores()
+		numbersSeparatedBySpace
 	}
-}
+
+@MainActor
+let scoreCards: some Parser<Substring, [ScoreCard]> =
+	Many {
+		scoreCard
+	} separator: {
+		Whitespace(1, .vertical)
+	}
