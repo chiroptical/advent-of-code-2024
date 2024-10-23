@@ -30,13 +30,25 @@ import Testing
 	}
 }
 
-@Test func basic_score_card() {
+@Test func can_parse_card_one() {
 	let test_input = "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53"
 	do {
 		let output = try scoreCard().parse(test_input)
 		#expect(output.number == 1)
 		#expect(output.winners == [41, 48, 83, 86, 17])
 		#expect(output.current == [83, 86, 6, 31, 17, 9, 48, 53])
+	} catch {
+		#expect(Bool(false), "Unable to parse")
+	}
+}
+
+@Test func can_parse_card_three() {
+	let test_input = "Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1"
+	do {
+		let output = try scoreCard().parse(test_input)
+		#expect(output.number == 3)
+		#expect(output.winners == [1, 21, 53, 59, 44])
+		#expect(output.current == [69, 82, 63, 72, 16, 21, 14, 1])
 	} catch {
 		#expect(Bool(false), "Unable to parse")
 	}
