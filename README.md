@@ -9,6 +9,4 @@ References
 TODO
 ===
 
-[ ] Add library to use with executable
-[ ] Adds tests
-[ ] Read about sets and maps
+[ ] Figure out how to parse this https://adventofcode.com/2023/day/4
