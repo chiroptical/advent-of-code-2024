@@ -27,6 +27,9 @@ let package = Package(
             dependencies: [
                 "advent-of-code-2024",
                 .product(name: "Testing", package: "swift-testing"),
+            ],
+            resources: [
+                .process("../../inputs/2023-day-4-test.txt")
             ]
         ),
         .executableTarget(

@@ -1,3 +1,4 @@
+import FileProvider
 import Testing
 
 @testable import advent_of_code_2024
@@ -5,6 +6,17 @@ import Testing
 @MainActor
 @Test func can_parse_card_number() {
 	let test_input = "Card 1:"
+	do {
+		let output = try cardNumber.parse(test_input)
+		#expect(output == 1)
+	} catch {
+		#expect(Bool(false), "Unable to parse")
+	}
+}
+
+@MainActor
+@Test func can_parse_card_number_with_spaces() {
+	let test_input = "Card    1:"
 	do {
 		let output = try cardNumber.parse(test_input)
 		#expect(output == 1)
@@ -75,4 +87,45 @@ import Testing
 	let card = ScoreCard(
 		number: 5, winners: [87, 83, 26, 28, 32], current: [88, 30, 70, 12, 93, 22, 82, 36])
 	#expect(card.points == 0)
+}
+
+@MainActor
+@Test func part_one() {
+	if let filePath = Bundle.module.path(forResource: "2023-day-4-test", ofType: ".txt") {
+		do {
+			// NOTE: The files have a trailing newline and it is a problem...
+			let contents = try String(contentsOfFile: filePath, encoding: .ascii)
+			let trimmed = contents.trimmingCharacters(in: .whitespacesAndNewlines)
+			let parsed = try scoreCards.parse(trimmed)
+			let totalPoints = parsed.reduce(
+				0,
+				{ (acc: Int64, input: ScoreCard) -> Int64 in
+					return acc + Int64(input.points)
+				})
+			#expect(totalPoints == 21088)
+		} catch {
+			print("Unexpected error: \(error).")
+			#expect(Bool(false), "Unable to parse test file")
+		}
+	} else {
+		#expect(Bool(false), "Unable to find bundle file")
+	}
+}
+
+@MainActor
+@Test func part_two() {
+	if let filePath = Bundle.module.path(forResource: "2023-day-4-test", ofType: ".txt") {
+		do {
+			// NOTE: The files have a trailing newline and it is a problem...
+			let contents = try String(contentsOfFile: filePath, encoding: .ascii)
+			let trionemed = contents.trimmingCharacters(in: .whitespacesAndNewlines)
+			let parsed = try scoreCards.parse(trimmed)
+			#expect(parsed.count == 213)
+		} catch {
+			print("Unexpected error: \(error).")
+			#expect(Bool(false), "Unable to parse test file")
+		}
+	} else {
+		#expect(Bool(false), "Unable to find bundle file")
+	}
 }

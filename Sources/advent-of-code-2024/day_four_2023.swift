@@ -40,7 +40,9 @@ let scoreCard: some Parser<Substring, ScoreCard> =
 		cardNumber
 		Whitespace()
 		numbersSeparatedBySpace
-		" | "
+		Whitespace()
+		"|"
+		Whitespace()
 		numbersSeparatedBySpace
 	}
 
@@ -49,5 +51,7 @@ let scoreCards: some Parser<Substring, [ScoreCard]> =
 	Many {
 		scoreCard
 	} separator: {
-		Whitespace(1, .vertical)
+		"\n"
+	} terminator: {
+		End()
 	}
