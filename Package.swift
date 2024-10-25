@@ -29,7 +29,7 @@ let package = Package(
                 .product(name: "Testing", package: "swift-testing"),
             ],
             resources: [
-                .process("../../inputs/2023-day-4-test.txt")
+                .process("../../inputs/2023-day-4.txt")
             ]
         ),
         .executableTarget(

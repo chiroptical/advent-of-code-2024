@@ -114,11 +114,11 @@ import Testing
 
 @MainActor
 @Test func part_two() {
-	if let filePath = Bundle.module.path(forResource: "2023-day-4-test", ofType: ".txt") {
+	if let filePath = Bundle.module.path(forResource: "2023-day-4", ofType: ".txt") {
 		do {
 			// NOTE: The files have a trailing newline and it is a problem...
 			let contents = try String(contentsOfFile: filePath, encoding: .ascii)
-			let trionemed = contents.trimmingCharacters(in: .whitespacesAndNewlines)
+			let trimmed = contents.trimmingCharacters(in: .whitespacesAndNewlines)
 			let parsed = try scoreCards.parse(trimmed)
 			#expect(parsed.count == 213)
 		} catch {
